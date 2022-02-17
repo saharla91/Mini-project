@@ -15,7 +15,6 @@ def order_menu():
     
     [4]Order and staus update''')
 
-            
         order_menu = int(input("enter order menu option: "))
         if order_menu == 1:
             with open("data/orders.csv", mode='r') as file:
@@ -25,7 +24,7 @@ def order_menu():
                     print(index, orders)
 
         elif order_menu == 2:
-            with open("data/order.csv", mode='a', newline='') as file:
+            with open("data/orders.csv", mode='a', newline='') as file:
                 order_list = []
                 field_name = ["customer name", "customer address", "customer phone"]
                 writer = csv.DictWriter(file,fieldnames=field_name, delimiter=',')
@@ -46,25 +45,23 @@ def order_menu():
         
         
         elif order_menu == 4:
-            order_list = []
-            status_list = []
-            chosen_order_index = int(input("pick an order: "))
-            chosen_status_index = int(input("pick a status: "))
-            print(order_list, chosen_order_index)
-            print(status_list, chosen_status_index)
-            
+            with open("data/orders.csv", mode='r') as file:
+                order_list = []
+                orders = file.readlines()
+                for index, order in enumerate(orders):
+                    print(index, order)
+                chosen_order_index = int(input("pick an order: "))
+                print(order)
+                status_list = ["preparing", "out-for-delivery", "cancelled", "delivered"]
+                for index, status in enumerate(status_list):
+                    print(index, status)
+                chosen_status_index = int(input("pick a status: "))
+                orders[chosen_order_index] = status_list[chosen_status_index]
+                print(order,status)
+                #orders[chosen_order_index] = status_list[chosen_status_index]
+                #return order, status
 
-    #         def update_order(orders):
-    # for index, order in enumerate(orders):
-    #     print(index, order)
-
-    # chosen_order_index = int(input("pick an order: "))
-
-    # for index, status in enumerate(statuses):
-    #     print(index, status)
-
-    # chosen_status_index = int(input("pick a status: "))
-
-    # orders[chosen_order_index]["status"] = statuses[chosen_status_index]
-
-    # return orders
+        elif order_menu == 0:
+            print("Order menu exited")
+        break
+    

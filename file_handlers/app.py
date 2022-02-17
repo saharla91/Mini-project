@@ -53,7 +53,7 @@ while True:
     
     #input to remove from the product list using index
             elif product_menu == 3:
-                with open("data/products.csv","r+",newline='') as file:
+                with open("data/products.csv","r+", newline='') as file:
                     product_list = file.readlines()
                     for index, product in enumerate(product_list):
                         print(index, product)
@@ -104,20 +104,30 @@ while True:
 
     #input to remove from current courier list using index
             elif courier_menu == 3:
-                with open("data/couriers.csv", "r+", newline='') as file:
-                    courier_list = file.readlines()
-                    for index, courier in enumerate(courier_list):
-                        print(index, courier)
-                    index_to_remove_courier = input("remove courier: ")
-                    courier_list.pop(int(index_to_remove_courier))
-                    file.writelines(courier_list)
-                    file.close()
-                    print("courier has been removed")
+                with open("data/couriers.csv", "r", newline='') as file:
+                    reader = csv.DictReader(file)
+                    courier_list = list(reader)
+                    field_names = reader.fieldnames
+                
+                for index, courier in enumerate(courier_list):
+                    print(index, courier)
+                index_to_remove_courier = input("remove courier: ")
+                courier_list.pop(int(index_to_remove_courier))
+                with open("data/couriers.csv", 'w', newline='') as file:
+                    writer = csv.DictWriter(file, field_names)
+                    writer.writeheader()
+                    writer.writerows(courier_list)
+                print("courier has been removed")
 
             elif courier_menu == 4:
-                print("courier menu has been exited")
+                print("courier menu has been exited", menu)
             break
 
     #ORDERS MENU
     if menu == 3:
         order_menu()
+
+    if menu == 0:
+        print("Programme is finished")
+    
+
