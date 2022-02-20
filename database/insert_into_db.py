@@ -2,14 +2,12 @@ import pymysql
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
 load_dotenv()
 host = os.environ.get("mysql_host")
 user = os.environ.get("mysql_user")
 password = os.environ.get("mysql_pass")
 database = os.environ.get("mysql_db")
 
-# Establish a database connection
 connection = pymysql.connect(
     host = host,
     user = user,
@@ -17,15 +15,21 @@ connection = pymysql.connect(
     database = database,
 )
 
-# A cursor is an object that represents a DB cursor, which is used to manage the context of a fetch operation.
 cursor = connection.cursor()
 
-# Add code here to insert a new record
-sql = "INSERT INTO person (first_name, last_name,age,email) VALUES (%s, %s,%s,%s)"
-val = [("perter","lowes","24","hell.com"),("hgf","wef",653,"hllg@.com")]
+sql = "INSERT INTO orders (name, address, phone, courier, status) VALUES (%s, %s)"
+val = [
+("Linda", "12a peterborough road LONDON HA1 2BQ", "0793837563", "3", "preparing"),
+("Johnny", "38 Hindes road LONDON NW10 6HJ", "0734875949", "2", "preparing"),
+("Sammy", "166 exeter road, LONDON, HA2 0HJ", "07568564726", "1", "preparing"),
+("Danni", "143 stonefield way NW10 9PK", "07568324726", "4", "preparing")
+]
 
-cursor.executemany(sql,val)
-
+cursor.executemany(sql, val)
 connection.commit()
-cursor.close()
-connection.close()
+print(cursor.rowcount, "record was inserted")
+
+
+#cursor.close()
+#connection.close()
+
