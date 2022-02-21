@@ -18,6 +18,7 @@ connection = pymysql.connect(
 )
 cursor = connection.cursor()
 
+#----main menu------
 while True: 
     print('''--------VIEW MAIN MENU--------
 
@@ -32,7 +33,7 @@ while True:
     menu = int(input("select one of the options: "))
         
     
-        #product menu selection options
+    #------products-------
     if menu == 1:
         while True:    
             print('''-----PRODUCT MENU-----
@@ -99,7 +100,7 @@ while True:
                 print("product menu has ended")
             break
 
-
+    #------couriers--------
     if menu == 2:
         while True:
             print('''-----COURIER MENU----
@@ -119,7 +120,7 @@ while True:
                 cursor.execute("SELECT * FROM couriers")
                 courier_connect = cursor.fetchall()
                 for x in courier_connect:
-                        print(x)
+                    print(x)
                 
 
             if courier_menu == 2:
@@ -168,3 +169,77 @@ while True:
             break
             #cursor.close()
             #connection.close()
+
+    #-------orders------
+    if menu == 3:
+        while True:
+            print('''-----ORDER MENU----
+
+        [0]Exit orders menu
+
+        [1]To view  orders
+
+        [2]To add orders
+
+        [3]To view status orders
+    
+        [4]Update orders''')
+
+            order_menu = int(input("enter order menu option: "))
+            if order_menu == 1:
+                cursor.execute("SELECT * FROM orders")
+                order_connect = cursor.fetchall()
+                for x in order_connect:
+                    print(x)
+
+            if order_menu == 2:
+                cursor.execute('SELECT * FROM orders')
+                for i in cursor:
+                    print(i)
+                new_customer_name = input("Enter customer name: ")
+                new_customer_address = input("Enter customer address: ")
+                new_customer_phone = int(input("Enter customer number: "))
+                if new_customer_name:
+                    sql_customer_name = "INSERT INTO orders (name, address, phone) VALUES (%s, %s, %s)"
+                    val_customer_name = (new_customer_name, new_customer_address, new_customer_phone)
+                    cursor.execute(sql_customer_name, val_customer_name)
+                    print("customer order details has been added")
+                    connection.commit()
+
+            if order_menu == 3:
+                cursor.execute("SELECT id,status FROM orders")
+                order_status = cursor.fetchall()
+                for i in order_status:
+                    print(i) 
+
+            if order_menu == 4:
+                cursor.execute('SELECT * FROM orders')
+                for i in cursor:
+                    print(i)
+                order_id = int(input("Select order id: "))
+                update_status_order = input("update status order: ")
+                if update_status_order:
+                    sql_update_status_order = "UPDATE orders SET status = %s WHERE id = %s"
+                    val_update_status_order = (update_status_order, order_id)
+                    cursor.execute(sql_update_status_order, val_update_status_order)
+                    print("order status has been updated")
+                    connection.commit()
+            if order_menu == 0:
+                print("order menu has ended")
+            break
+
+    if menu == 0:
+        print("Menu had ended, Thank you")
+        break
+                
+
+                #if new_customer_address:
+                    #sql_customer_address = "INSERT INTO orders (address) VALUES (%s)"
+                    #val_customer_address = (new_customer_address)
+                    #cursor.execute(sql_customer_address, val_customer_address)
+                    #print("customer address has been added")
+                #if new_customer_phone:
+                    #sql_customer_number = "INSERT INTO orders (phone) VALUES (%s)"
+                    #val_customer_number = (new_customer_phone)
+                    #cursor.execute(sql_customer_number, val_customer_number)
+                    #print("customer number has been added")
