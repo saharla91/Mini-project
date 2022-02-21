@@ -6,5 +6,8 @@ This programme runs on a command line and is displayed into a terminal.
 
 # what can this programme do?
 User is able to view products, couriers and orders.
+user is able to add to products, couriers and orders.
 User is able to update products, couriers and orders.
 User is able to delete products, couriers and orders.
+
+# 
