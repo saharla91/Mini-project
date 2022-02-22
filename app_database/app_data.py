@@ -1,4 +1,5 @@
 from multiprocessing.spawn import import_main_path
+from select import select
 import pymysql
 import os
 from dotenv import load_dotenv
@@ -98,7 +99,7 @@ while True:
 
             if product_menu == 0:
                 print("product menu has ended")
-            break
+                break
 
     #------couriers--------
     if menu == 2:
@@ -166,7 +167,7 @@ while True:
 
             if courier_menu == 0:
                 print("courier menu has ended")
-            break
+                break
             #cursor.close()
             #connection.close()
 
@@ -183,7 +184,11 @@ while True:
 
         [3]To view status orders
     
-        [4]Update orders''')
+        [4]Update orders
+        
+        [5]products to orders
+        
+        [6]Delete order''')
 
             order_menu = int(input("enter order menu option: "))
             if order_menu == 1:
@@ -222,24 +227,50 @@ while True:
                     sql_update_status_order = "UPDATE orders SET status = %s WHERE id = %s"
                     val_update_status_order = (update_status_order, order_id)
                     cursor.execute(sql_update_status_order, val_update_status_order)
-                    print("order status has been updated")
+                    print("order status has been updated",)
+                    cursor.execute('SELECT * FROM orders')
+                    for i in cursor:
+                        print(i)
                     connection.commit()
+
+            if order_menu == 5:
+                cursor.execute('SELECT id, name, status FROM orders')
+                for i in cursor:
+                    print(i)
+                cursor.execute('SELECT id, name FROM products')
+                for a in cursor:
+                    print(a)
+                select_order_id = int(input("choose order ID: "))
+                select_product_id = int(input("choose product ID: "))
+                if select_order_id:
+                    sql_order_id_to_orders = "INSERT INTO products_on_orders (order_id, product_id) VALUES (%s, %s)"
+                    val_order_id_to_orders = (select_order_id, select_product_id)
+                    cursor.execute(sql_order_id_to_orders, val_order_id_to_orders)
+                    print("product has been added to order")
+                    statuses = ["preparing", "cancelled", "out-for-delivery", "delivered"]
+                    print(statuses)
+                    update_order_status = input("Update order status: ")
+                    update_order_status = val_order_id_to_orders
+                if update_order_status:
+                    sql_update = "UPDATE orders SET status = %s WHERE id = %s"
+                    val_update = (update_order_status)
+                    cursor.execute(sql_update, val_update)
+                    cursor.execute('''SELECT orders.name, orders.status
+                                    FROM orders JOIN products_on_orders on orders.id =
+                                    products_on_orders.order_id
+                                    join products on products_on_orders.product_id = products.id''')
+                    for a in cursor:
+                        print(a)
+                    connection.commit()
+    
             if order_menu == 0:
                 print("order menu has ended")
-            break
-
+                break
+    
+    #---Menu is finished------
     if menu == 0:
         print("Menu had ended, Thank you")
         break
                 
 
-                #if new_customer_address:
-                    #sql_customer_address = "INSERT INTO orders (address) VALUES (%s)"
-                    #val_customer_address = (new_customer_address)
-                    #cursor.execute(sql_customer_address, val_customer_address)
-                    #print("customer address has been added")
-                #if new_customer_phone:
-                    #sql_customer_number = "INSERT INTO orders (phone) VALUES (%s)"
-                    #val_customer_number = (new_customer_phone)
-                    #cursor.execute(sql_customer_number, val_customer_number)
-                    #print("customer number has been added")
+            
