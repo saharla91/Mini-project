@@ -181,12 +181,10 @@ while True:
         [1]To view  orders
 
         [2]To create order
-
-        [3]To view status orders
     
-        [4]Update orders
+        [3]Update orders
         
-        [5]Delete order''')
+        [4]Delete order''')
 
             order_menu = int(input("enter order menu option: "))
             if order_menu == 1:
@@ -234,13 +232,8 @@ GROUP BY orders.id, orders.name, orders.address, orders.phone, orders.courier, o
                         print("customer order details has been added")
                         connection.commit()
 
-            if order_menu == 3:
-                cursor.execute("SELECT id,status FROM orders")
-                order_status = cursor.fetchall()
-                for i in order_status:
-                    print(i) 
 
-            if order_menu == 4:
+            if order_menu == 3:
                 cursor.execute('SELECT * FROM orders')
                 for i in cursor:
                     print(i)
@@ -256,34 +249,17 @@ GROUP BY orders.id, orders.name, orders.address, orders.phone, orders.courier, o
                         print(i)
                     connection.commit()
 
-            # if order_menu == 5:
-            #     cursor.execute('SELECT id, name, status FROM orders')
-            #     for i in cursor:
-            #         print(i)
-            #     cursor.execute('SELECT id, name FROM products')
-            #     for a in cursor:
-            #         print(a)
-            #     select_order_id = int(input("choose order ID: "))
-            #     select_product_id = int(input("choose product ID: "))
-            #     if select_order_id:
-            #         sql_order_id_to_orders = "INSERT INTO products_on_orders (order_id, product_id) VALUES (%s, %s)"
-            #         val_order_id_to_orders = (select_order_id, select_product_id)
-            #         cursor.execute(sql_order_id_to_orders, val_order_id_to_orders)
-            #         print("product has been added to order")
-            #         statuses = ["preparing", "cancelled", "out-for-delivery", "delivered"]
-            #         print(statuses)
-            #         update_order_status = input("Update order status: ")
-            #     if update_order_status:
-            #         sql_update = "UPDATE orders SET status = %s WHERE id = %s "
-            #         val_update = (select_order_id, update_order_status)
-            #         cursor.execute(sql_update, val_update)
-            #         cursor.execute('''SELECT orders.name, orders.status
-            #                         FROM orders JOIN products_on_orders on orders.id =
-            #                         products_on_orders.order_id
-            #                         join products on products_on_orders.product_id = products.id''')
-            #         for a in cursor:
-            #             print(a)
-            #         connection.commit()
+            if order_menu == 4:
+                cursor.execute('SELECT * FROM orders')
+                for a in cursor:
+                    print(a)
+                cursor = connection.cursor()
+                delete_order_id = int(input("enter order id: "))
+                sql_delete_order = "DELETE FROM orders WHERE id = %s"
+                val_delete_order = (delete_order_id)
+                cursor.execute(sql_delete_order, val_delete_order)
+                connection.commit()
+                print(cursor.rowcount, "record(s) deleted")
     
             if order_menu == 0:
                 print("order menu has ended")
