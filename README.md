@@ -9,7 +9,7 @@
 1. User is able to view products, couriers and orders.
 2. user is able to add to products, couriers and orders.
 3. User is able to update products, couriers and orders.
-4. User is able to delete products, couriers and orders.
+4. User is able to delete products.
 
 # Data
 1. This app allows users to perform CRUD (create, read, update, delete).
