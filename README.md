@@ -1,4 +1,4 @@
-# Saharla's American diner cafe mini-project
+# Saharla's cafe mini-project
 
 1. This app is built in python. It is a software application to help log
    and track orders.
