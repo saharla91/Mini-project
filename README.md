@@ -1,4 +1,4 @@
-# Saharla's cafe mini-project
+# cafe mini-project
 
 1. This app is built in python. It is a software application to help log
    and track orders.
